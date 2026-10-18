@@ -1,0 +1,19 @@
+# dsh-skin bundle patch
+#
+# This file is the `dsh.bundle.patch` layer of the package: installing it with
+#
+#   dsh plugin --profile web add github:changan0617/dsh-skin
+#
+# makes the plugin manager append `dsh-skin` to the profile's bundle stack and
+# merge this single `insert` row, so no manual edit of the profile's own
+# cordis.patch.yml is needed. Uninstall with
+#
+#   dsh plugin --profile web remove dsh-skin
+#
+# The double-mount guard keeps this row out of the way when the same package is
+# already mounted by another entry (an aggregate bundle, or a manual mount line
+# still present in the profile's cordis.patch.yml).
+- insert:
+    - id: harness-skin
+      name: 'dsh-skin'
+      disabled: !!js "[...ctx.loader.entries()].some((e) => e.options.name === 'dsh-skin' && e.options.id !== 'harness-skin' && !e.disabled)"
